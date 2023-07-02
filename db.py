@@ -3,7 +3,7 @@ import os
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-from .config import settings
+from config import settings
 
 # connection pool - список соеденений с бд
 
@@ -17,6 +17,7 @@ from .config import settings
 # Engine= Connects a Pool and Dialect together to provide a source of database connectivity and behavior.
 engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URI, echo=True, future=True)
 
+
 # asyncpg.create_pool(settings.SQLALCHEMY_DATABASE_URI)
 
 async def init_db():
@@ -27,11 +28,11 @@ async def init_db():
         await conn.run_sync(Base.metadata.create_all)
 
 
-
 # фабрика, которая генерируют новую сессия при каждом вызове
 async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 Base = declarative_base()
+
 
 # используется как зависимости, для создания сессии с бд
 async def get_session() -> AsyncSession:
