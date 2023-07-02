@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from pydantic import BaseModel, Field
 
@@ -7,8 +7,7 @@ class BaseUser(BaseModel):
     username: str
     is_active: bool = True
     salary: int | None = None
-    next_promotion: datetime = datetime.today() + timedelta(days=180)
-
+    next_promotion: date
 
 class CreateUser(BaseUser):
     password: str = Field(max_length=30, min_length=6)
