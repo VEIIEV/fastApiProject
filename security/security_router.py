@@ -10,7 +10,7 @@ from config import settings
 from db import get_session
 from security import depend, user_crud
 from security.depend import get_current_user
-from security.user_schemas import BaseUser
+from security.user_schemas import BaseUser, UserInDB
 from security import user_schemas
 
 router = APIRouter(
@@ -39,8 +39,9 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/user/me", response_model=BaseUser)
-async def read_users_me(current_user: Annotated[BaseUser, Depends(get_current_user)]):
+@router.get("/user/me", response_model=UserInDB)
+async def read_users_me(current_user: Annotated[UserInDB, Depends(get_current_user)]):
+    current_user.hashed_password=''
     return current_user
 
 
